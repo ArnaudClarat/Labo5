@@ -16,6 +16,9 @@ L'inventaire affichera également le stock de monnaie pour le rendu (différent 
 
 import csv
 
+def updateStock(choix):
+    with open('stock.csv', 'w', newline='') as csvfile:
+        a = 0
 
 def payement(stock, choix):
     somme = 0
@@ -30,6 +33,7 @@ def payement(stock, choix):
     if somme > prix:
         aRendre = somme - prix
         print(str(aRendre) + "€ rendu")
+    updateStock(choix)
 
 
 def affichage(stock):
