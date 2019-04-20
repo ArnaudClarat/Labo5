@@ -16,45 +16,63 @@ L'inventaire affichera également le stock de monnaie pour le rendu (différent 
 
 import csv
 
+
 def updateStock(choix):
     with open('stock.csv', 'w', newline='') as csvfile:
         a = 0
 
+
 def payement(stock, choix):
     somme = 0
+    prix = -2
+    j = 0
     for i in stock:
         if i[0].lower() == choix:
             prix = float(i[1])
             pass
-    print("Veuillez insérer", str(prix) + "€")
+    if prix > 0 :
+        print("Veuillez insérer", str(prix) + "€")
+    if prix <= 0 :
+        print("Erreur interne, retour au menu")
+        affichage(stock)
     while somme < prix:
-        piece = input("Veuillez insérer (le montant) d'une pièce : ")
+        j += 1
+        if j == 1 :
+             piece = input(str(j) + "ère pièce : ")
+        else :
+            piece = input(str(j) + "ème pièce : ")
         somme += float(piece)
     if somme > prix:
         aRendre = somme - prix
         print(str(aRendre) + "€ rendu")
+    else :
+        print("Reste", prix - somme, "euros à insérer")
     updateStock(choix)
 
 
 def affichage(stock):
+    print("")
     for i in stock:
         if int(i[2]) > 0:
             print("\t", i[0], ":", i[1] + "€")
-    choix = input("Que voulez-vous boire? ").lower()
+    choix = input("\tQue voulez-vous boire? ").lower()
     while choix not in ["coca", "fanta", "ice tea"]:
         choix = input("Nous n'avons pas compris, veuiller réessayer. ")
     return choix
 
 
 def main():
-    stock = []
-    with open ("stock.csv", newline='') as csvfile:
-        file = csv.reader(csvfile, delimiter=',', quotechar='|')
-        for row in file:
-            stock.append(row)
-    print("\nBienvenue dans ce distributeur de boisson!\n")
-    choix = affichage(stock)
-    payement(stock, choix)
+    choix = "aze"
+    while choix.lower() != "inv":
+        stock = []
+        with open("stock.csv", 'r', newline='') as csvfile:
+            file = csv.reader(csvfile, delimiter=',', quotechar='|')
+            for row in file:
+                stock.append(row)
+        print("\nBienvenue dans ce distributeur de boisson!")
+        choix = affichage(stock)
+        payement(stock, choix)
+    # TODO fonction inventaire
 
 if __name__ == "__main__":
     main()
