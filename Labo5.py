@@ -15,11 +15,19 @@ Si le rendu n'est pas possible (manque de monnaie en stock ) laissé le choix a 
 L'inventaire affichera également le stock de monnaie pour le rendu (différent des payements)"""
 
 import csv
+import lib
 
 
-def updateStock(choix):
-    #with open('stock.csv', 'w', newline='') as csvfile:
-    pass
+def updateStock(stock, choix):
+    modStock = stock
+    for i in stock:
+        if i[0].lower() == choix:
+            temp = int(i[2])
+            temp -= 1
+            i[2] = temp
+    with open('stock.csv', 'w', newline='') as csvfile:
+        file = csv.writer(csvfile, delimiter=',')
+        file.writerows(modStock)
 
 
 def payement(stock, choix):
@@ -38,15 +46,18 @@ def payement(stock, choix):
         j += 1
         if j == 1:
             piece = input(str(j) + "ère pièce : ")
+            while not lib.isfloat(piece):
+                piece = input(lib.typoError)
         else:
             piece = input(str(j) + "ème pièce : ")
+            while not lib.isfloat(piece):
+                piece = input(lib.typoError)
         somme += float(piece)
-    if somme > prix:
-        aRendre = somme - prix
-        print(str(aRendre) + "€ rendu")
-    else:
-        print("Reste", prix - somme, "euros à insérer")
-    updateStock(choix)
+        if somme > prix:
+            aRendre = somme - prix
+            print(str(round(aRendre, 2)) + "€ rendu")
+        else:
+            print("Reste", round(prix - somme, 2), "euros à insérer")
 
 
 def affichage(stock):
@@ -56,7 +67,7 @@ def affichage(stock):
             print("\t", i[0], ":", i[1] + "€")
     choix = input("\tQue voulez-vous boire? ").lower()
     while choix not in ["coca", "fanta", "ice tea"]:
-        choix = input("Nous n'avons pas compris, veuiller réessayer. ")
+        choix = input(lib.typoError)
     return choix
 
 
@@ -71,6 +82,7 @@ def main():
         print("\nBienvenue dans ce distributeur de boisson!")
         choix = affichage(stock)
         payement(stock, choix)
+        updateStock(stock, choix)
     # TODO fonction inventaire
 
 
