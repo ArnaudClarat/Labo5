@@ -85,6 +85,7 @@ def main():
         choix = affichage(stock)
         payement(stock, choix)
         updateStock(stock, choix)
+    # TODO stock monnaie
     # TODO fonction inventaire
 
 
