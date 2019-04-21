@@ -61,12 +61,14 @@ def payement(stock, choix):
 
 
 def affichage(stock):
+    temp = []
     print("")
     for i in stock:
         if int(i[2]) > 0:
+            temp.append(i[0].lower())
             print("\t", i[0], ":", i[1] + "€")
     choix = input("\tQue voulez-vous boire? ").lower()
-    while choix not in ["coca", "fanta", "ice tea"]:
+    while choix not in temp:
         choix = input(lib.typoError)
     return choix
 
