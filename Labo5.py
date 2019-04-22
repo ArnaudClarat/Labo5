@@ -30,6 +30,14 @@ def updateStock(stock, choix):
         file.writerows(modStock)
 
 
+def updateMoney(piece):
+    monnaie = []
+    with open("money.csv", 'r+', newline='') as csvfile:
+        filereader = csv.reader(csvfile)
+        for row in filereader:
+            monnaie.append(row)
+
+
 def payement(stock, choix):
     somme = 0
     prix = -2
@@ -43,14 +51,15 @@ def payement(stock, choix):
         print("Erreur interne, retour au menu")
         affichage(stock)
     while somme < prix:
+        pieces = ["0.01", "0.02", "0.05", "0.1", "0.2", "0.5", "1", "2"]
         j += 1
         if j == 1:
             piece = input(str(j) + "ère pièce : ")
-            while not lib.isfloat(piece):
+            while not (lib.isfloat(piece) and in pieces):
                 piece = input(lib.typoError)
         else:
             piece = input(str(j) + "ème pièce : ")
-            while not lib.isfloat(piece):
+            while not lib.isfloat(piece) or not in pieces:
                 piece = input(lib.typoError)
         somme += float(piece)
         if somme > prix:
