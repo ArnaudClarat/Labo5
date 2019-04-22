@@ -55,11 +55,11 @@ def payement(stock, choix):
         j += 1
         if j == 1:
             piece = input(str(j) + "ère pièce : ")
-            while not (lib.isfloat(piece) and in pieces):
+            while not lib.isfloat(piece) or piece not in pieces:
                 piece = input(lib.typoError)
         else:
             piece = input(str(j) + "ème pièce : ")
-            while not lib.isfloat(piece) or not in pieces:
+            while not lib.isfloat(piece) or piece not in pieces:
                 piece = input(lib.typoError)
         somme += float(piece)
         if somme > prix:
