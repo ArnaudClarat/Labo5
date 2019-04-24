@@ -30,15 +30,50 @@ def updateStock(stock, choix):
         file.writerows(modStock)
 
 
-def updateMoney(piece):
+def updateMoney(pieces):
     monnaie = []
-    with open("money.csv", 'r+', newline='') as csvfile:
+    with open("money.csv", 'r', newline='') as csvfile:
         filereader = csv.reader(csvfile)
         for row in filereader:
             monnaie.append(row)
+    for i in monnaie:
+        for piece in pieces:
+            if i[0] == piece:
+                temp = int(i[1])
+                temp += 1
+                i[1] = temp
+    with open("money.csv", 'w', newline='') as csvfile:
+        filewriter = csv.writer(csvfile, delimiter=',')
+        filewriter.writerows(monnaie)
+
+
+def retour(montant):
+    j = 0
+    aRendre = []
+    monnaie = []
+    with open("money.csv", 'r', newline='') as csvfile:
+        filereader = csv.reader(csvfile)
+        for row in filereader:
+            monnaie.append(row)
+    with open("money.csv", 'w', newline='') as csvfile:
+        filewriter = csv.writer(csvfile, delimiter=',')
+        while montant > 0:
+            for i in monnaie:
+                if int(i[0]) > montant and int(i[1]) < 0:
+                    temp = int(i[1])
+                    temp -= 1
+                    i[1] = temp
+                    try:
+                        aRendre[j][0]
+                    elif aRendre[j][0] == i[0]:
+                        aRendre[j][1] += 1
+                    else:
+                        aRendre
+                        j += 1
 
 
 def payement(stock, choix):
+    monnaie = []
     somme = 0
     prix = -2
     j = 0
@@ -62,11 +97,14 @@ def payement(stock, choix):
             while not lib.isfloat(piece) or piece not in pieces:
                 piece = input(lib.typoError)
         somme += float(piece)
-        if somme > prix:
-            aRendre = somme - prix
-            print(str(round(aRendre, 2)) + "€ rendu")
-        else:
+        monnaie.append(piece)
+        if somme < prix:
             print("Reste", round(prix - somme, 2), "euros à insérer")
+    updateMoney(monnaie)
+    aRendre = somme - prix
+    retour(aRendre)
+    # TODO retour monnaie
+    print(str(round(aRendre, 2)) + "€ rendu")
 
 
 def affichage(stock):
@@ -83,7 +121,7 @@ def affichage(stock):
 
 
 def main():
-    choix = "aze"
+    choix = ""
     while choix.lower() != "inv":
         stock = []
         with open("stock.csv", 'r', newline='') as csvfile:
@@ -94,7 +132,6 @@ def main():
         choix = affichage(stock)
         payement(stock, choix)
         updateStock(stock, choix)
-    # TODO stock monnaie
     # TODO fonction inventaire
 
 
