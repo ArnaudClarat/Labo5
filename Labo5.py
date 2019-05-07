@@ -48,7 +48,6 @@ def updateMoney(pieces):
 
 
 def retour(montant):
-    j = 0
     aRendre = []
     monnaie = []
     with open("money.csv", 'r', newline='') as csvfile:
@@ -58,6 +57,20 @@ def retour(montant):
     with open("money.csv", 'w', newline='') as csvfile:
         filewriter = csv.writer(csvfile, delimiter=',')
         while montant > 0:
+            print(montant)
+            for i in monnaie:
+                print(i[0], i[1], "i")
+                while float(i[0]) < montant and int(i[1]) > 0:
+                    print("while")
+                    temp = int(i[1])
+                    temp -= 1
+                    i[1] = temp
+                    aRendre.append(float(i[0]))
+                    montant -= float(i[0])
+        filewriter.writerows(monnaie)
+    print("Retour =", aRendre)
+
+    """while montant > 0:
             for i in monnaie:
                 if int(i[0]) > montant and int(i[1]) < 0:
                     temp = int(i[1])
@@ -69,7 +82,7 @@ def retour(montant):
                         aRendre[j][1] += 1
                     else:
                         aRendre
-                        j += 1
+                        j += 1"""
 
 
 def payement(stock, choix):
