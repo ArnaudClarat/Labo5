@@ -48,7 +48,7 @@ def updateMoney(pieces):
 
 
 def compteurliste(liste):
-    pass
+    pass # TODO Compter pièce et return retour pièce
 
 
 def retour(montant):
