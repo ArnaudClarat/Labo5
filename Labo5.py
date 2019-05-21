@@ -47,8 +47,12 @@ def updateMoney(pieces):
         filewriter.writerows(monnaie)
 
 
+def compteurliste(liste):
+    pass
+
+
 def retour(montant):
-    aRendre = []
+    pieceARendre = []
     monnaie = []
     with open("money.csv", 'r', newline='') as csvfile:
         filereader = csv.reader(csvfile)
@@ -59,16 +63,18 @@ def retour(montant):
         while montant > 0:
             print(montant)
             for i in monnaie:
-                print(i[0], i[1], "i")
-                while float(i[0]) < montant and int(i[1]) > 0:
-                    print("while")
+                print("\t", i[0], i[1], "i")
+                while float(i[0]) <= montant and int(i[1]) > 0:
+                    print("\t\twhile\n")
                     temp = int(i[1])
                     temp -= 1
                     i[1] = temp
-                    aRendre.append(float(i[0]))
+                    pieceARendre.append(float(i[0]))
                     montant -= float(i[0])
+                    montant = round(montant, 2)
         filewriter.writerows(monnaie)
-    print("Retour =", aRendre)
+        #compteurliste(pieceARendre)
+    print("Retour =", pieceARendre)
 
     """while montant > 0:
             for i in monnaie:
